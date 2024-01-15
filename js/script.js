@@ -43,7 +43,14 @@ for (let c = 0; c < 32; c = c + 1) {
           openCards[0].src = "img/card.jpg";
           openCards[1].src = "img/card.jpg";
           openCards = [];
+          for(let c of cards){
+            c.style.pointerEvents = "auto"
+          }
         }, 1000);
+        let cards = game.children
+        for(let c of cards){
+          c.style.pointerEvents = "none"
+        }
       }
       console.log("Вы открыли 2 карточки");
     }
@@ -60,12 +67,9 @@ for (let c = 0; c < 32; c = c + 1) {
   };
 }
 gameInterval = setInterval(function () {
+  console.log(1);
   if (isPlaying) {
     seconds = seconds + 1;
   }
   time.innerHTML = "Time: " + seconds;
-  if (seconds == 0) {
-    clearInterval(gameInterval);
-    canPlay = false;
-  }
 }, 1000);
