@@ -3,10 +3,34 @@ let imageNames = [];
 let openCards = [];
 let i = 0;
 let game = document.getElementById("game");
+let time = document.getElementById("time");
+let attempts = document.getElementById("attempts");
+let newGame = document.getElementById("newGame");
+let a = 0
 let seconds = 0;
-let time = document.getElementsByTagName("h2")[0];
+let amountCards  = 0;
 let isPlaying = false;
 let dogs = 0
+
+newGame.onclick = function () {
+  isPlaying = false
+  seconds = 0
+  time.innerHTML = "Time: " + seconds;
+  a = 0
+  attempts.innerHTML = "Attempts: " + a; 
+  for (let m = imageNames.length - 1; m > 0; m--) {
+    let randomNumber = Math.floor(Math.random() * (m + 1));
+    let slot = imageNames[randomNumber];
+    imageNames[randomNumber] = imageNames[m];
+    imageNames[m] = slot; 
+  }
+  let cards = game.children
+  for(let c of cards){
+    c.style.pointerEvents = "auto"
+    c.src = "img/card.jpg"
+  }
+  }
+
 while (i < 16) {
   imageNames.push("dog  (" + i + ").jpg");
   imageNames.push("dog  (" + i + ").jpg");
@@ -25,11 +49,13 @@ for (let c = 0; c < 32; c = c + 1) {
   game.appendChild(card);
   card.style.height = card.offsetWidth + "px";
   card.onclick = function () {
+    card.style.pointerEvents = "none";
     isPlaying = true;
-
     card.src = "img/" + imageNames[c];
     openCards.push(card);
     if (openCards.length == 2) {
+      a = a +1
+      attempts.innerHTML = "Attempts: " + a;
       if (openCards[0].src == openCards[1].src) {
         openCards = [];
         dogs = dogs + 2
@@ -43,14 +69,18 @@ for (let c = 0; c < 32; c = c + 1) {
           openCards[0].src = "img/card.jpg";
           openCards[1].src = "img/card.jpg";
           openCards = [];
+
           for(let c of cards){
-            c.style.pointerEvents = "auto"
+            if (c.src.includes("card.jpg") ) {
+              c.style.pointerEvents = "auto"
+            }
           }
         }, 1000);
         let cards = game.children
         for(let c of cards){
           c.style.pointerEvents = "none"
         }
+
       }
       console.log("Вы открыли 2 карточки");
     }
